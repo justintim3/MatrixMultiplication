@@ -20,7 +20,7 @@ public class MatrixMultiplication {
 		};
 
 		Matrix a, b, c, d;
-		System.out.printf("%6s %15s %15s %15s %15s\n", "n", "Standard", "Strassen", "Standard Growth", "Strassen Growth");
+		System.out.printf("%10s %15s %15s %15s %15s\n", "n", "Standard", "Strassen", "Standard Growth", "Strassen Growth");
 		for(int i = start; i <= end; i++) {
 			n = (int)Math.pow(2, i);
 			ay = n; 
@@ -34,13 +34,11 @@ public class MatrixMultiplication {
 			
 			a.fillRand(0, 100);
 			b.fillRand(0, 100);
-			a.shuffle();
-			b.shuffle();
 			
 			mulTime[i - start] = timer(multiply, pool, a, b);
 			straTime[i - start] = timer(strassen, pool, a, b);
 			
-			System.out.printf("%6d %15d %15d", n, mulTime[i - start], straTime[i - start]);
+			System.out.printf("%10d %15d %15d", n, mulTime[i - start], straTime[i - start]);
 			if(i > start) {
 				System.out.printf(" %15.2f %15.2f", (1.0 * mulTime[i - start] / mulTime[i - start - 1]) , (1.0 * straTime[i - start] / straTime[i - start - 1]));
 			}
