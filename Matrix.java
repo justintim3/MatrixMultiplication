@@ -21,51 +21,12 @@ public class Matrix {
 		}
 	}
 
-	public Matrix(Matrix a, int ySize, int xSize, int yStart, int xStart, int yEnd, int xEnd) { //Copy Constructor
-		y = ySize;
-		x = xSize;
-		array = new int [y][x];
-		for(int i = yStart; i <= yEnd; i++) {
-			for(int j = xStart; j <= xEnd; j++) {
-				array[i - yStart][j - xStart] = a.getValue(i, j);
-			}
-		}
-	}
-
-	public Matrix add(Matrix matrix) {
-		Matrix temp = new Matrix(y, x);
-		if(this.compareDim(matrix)){
-			for(int i = 0; i < y; i++) {
-				for(int j = 0; j < x; j++) {
-					temp.replace(i, j, array[i][j] + matrix.getValue(i, j)); 
-				}
-			}
-		} else {
-			System.out.println("Incompatible matrices!");
-		}
-		return temp;
-	}
-
 	public Matrix add(MatrixPool pool, Matrix matrix) {
 		Matrix temp = pool.createMatrix(y, x);
-		if(this.compareDim(matrix)){
+		if(y == matrix.y && x == matrix.x){
 			for(int i = 0; i < y; i++) {
 				for(int j = 0; j < x; j++) {
 					temp.replace(i, j, array[i][j] + matrix.getValue(i, j)); 
-				}
-			}
-		} else {
-			System.out.println("Incompatible matrices!");
-		}
-		return temp;
-	}
-
-	public Matrix subtract(Matrix matrix) {
-		Matrix temp = new Matrix(y, x);
-		if(this.compareDim(matrix)){
-			for(int i = 0; i < y; i++) {
-				for(int j = 0; j < x; j++) {
-					temp.replace(i, j, array[i][j] - matrix.getValue(i, j)); 
 				}
 			}
 		} else {
@@ -76,7 +37,7 @@ public class Matrix {
 
 	public Matrix subtract(MatrixPool pool, Matrix matrix) {
 		Matrix temp = pool.createMatrix(y, x);
-		if(this.compareDim(matrix)){
+		if(y == matrix.y && x == matrix.x){
 			for(int i = 0; i < y; i++) {
 				for(int j = 0; j < x; j++) {
 					temp.replace(i, j, array[i][j] - matrix.getValue(i, j)); 
@@ -205,16 +166,8 @@ public class Matrix {
 		}
 	}
 
-	private static int nextPowOfTwo(int n) {
-		return (int)Math.pow(2, Math.ceil(Math.log(n) / Math.log(2)));
-	}
-
 	public int getValue(int y, int x) {
 		return array[y][x];
-	}
-
-	public int[][] getArray() {
-		return array;
 	}
 
 	public void fillAsc() {
@@ -250,12 +203,8 @@ public class Matrix {
 		}
 	}
 
-	public boolean compareDim(Matrix a) {
-		return this.y == a.y && this.x == a.x;
-	}
-
 	public boolean equals(Matrix a) { //Compares equality of matrix with parameter matrix
-		if(!this.compareDim(a)) {
+		if(y != a.y || x != a.x) {
 			return false;
 		}
 		for(int i = 0; i < y; i++) {
