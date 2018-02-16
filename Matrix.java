@@ -46,8 +46,36 @@ public class Matrix {
 		return temp;
 	}
 
+	public Matrix add(MatrixPool pool, Matrix matrix) {
+		Matrix temp = pool.createMatrix(y, x);
+		if(this.compareDim(matrix)){
+			for(int i = 0; i < y; i++) {
+				for(int j = 0; j < x; j++) {
+					temp.replace(i, j, array[i][j] + matrix.getValue(i, j)); 
+				}
+			}
+		} else {
+			System.out.println("Incompatible matrices!");
+		}
+		return temp;
+	}
+
 	public Matrix subtract(Matrix matrix) {
 		Matrix temp = new Matrix(y, x);
+		if(this.compareDim(matrix)){
+			for(int i = 0; i < y; i++) {
+				for(int j = 0; j < x; j++) {
+					temp.replace(i, j, array[i][j] - matrix.getValue(i, j)); 
+				}
+			}
+		} else {
+			System.out.println("Incompatible matrices!");
+		}
+		return temp;
+	}
+
+	public Matrix subtract(MatrixPool pool, Matrix matrix) {
+		Matrix temp = pool.createMatrix(y, x);
 		if(this.compareDim(matrix)){
 			for(int i = 0; i < y; i++) {
 				for(int j = 0; j < x; j++) {
@@ -111,14 +139,14 @@ public class Matrix {
 			c.replace(1, 1, a.getValue(1, 0) * b.getValue(0, 1) + a.getValue(1, 1) * b.getValue(1, 1));
 		} else {
 			int m = a.y;
-			Matrix A00 = pool.createMatrix(m / 2, m / 2);
-			Matrix A01 = pool.createMatrix(m / 2, m / 2);
-			Matrix A10 = pool.createMatrix(m / 2, m / 2);
-			Matrix A11 = pool.createMatrix(m / 2, m / 2);
-			Matrix B00 = pool.createMatrix(m / 2, m / 2);
-			Matrix B01 = pool.createMatrix(m / 2, m / 2);
-			Matrix B10 = pool.createMatrix(m / 2, m / 2);
-			Matrix B11 = pool.createMatrix(m / 2, m / 2);
+			Matrix A00 = pool.createMatrix(m/2, m/2);
+			Matrix A01 = pool.createMatrix(m/2, m/2);
+			Matrix A10 = pool.createMatrix(m/2, m/2);
+			Matrix A11 = pool.createMatrix(m/2, m/2);
+			Matrix B00 = pool.createMatrix(m/2, m/2);
+			Matrix B01 = pool.createMatrix(m/2, m/2);
+			Matrix B10 = pool.createMatrix(m/2, m/2);
+			Matrix B11 = pool.createMatrix(m/2, m/2);
 
 			A00.copy(a, 0,   0,   m/2 - 1, m/2 - 1, 0, 0);
 			A01.copy(a, 0,   m/2, m/2 - 1, m - 1  , 0, 0);
@@ -137,18 +165,23 @@ public class Matrix {
 			Matrix U = pool.createMatrix(m/2, m/2);
 			Matrix V = pool.createMatrix(m/2, m/2);
 
-			strassen(pool, A00.add(A11), B00.add(B11), P);
-			strassen(pool, A10.add(A11), B00, Q);
+			strassen(pool, A00.add(pool, A11), B00.add(pool, B11), P);
+			strassen(pool, A10.add(pool, A11), B00, Q);
 			strassen(pool, A00, B01.subtract(B11), R);
 			strassen(pool, A11, B10.subtract(B00), S);
-			strassen(pool, A00.add(A01), B11, T);
-			strassen(pool, A10.subtract(A00), B00.add(B01), U);
-			strassen(pool, A01.subtract(A11), B10.add(B11), V);
-			
-			c.copy(P.add(S.add(V.subtract(T))), 0, 0, m/2 - 1,       m/2 - 1,       0,   0);
-			c.copy(R.add(T),                    0, 0, m/2 - 1,       b.x - m/2 - 1, 0,   m/2);
-			c.copy(Q.add(S),                    0, 0, a.y - m/2 - 1, m/2 - 1,       m/2, 0);
-			c.copy(P.add(R.add(U.subtract(Q))), 0, 0, a.y - m/2 - 1, b.x - m/2 - 1, m/2, m/2);
+			strassen(pool, A00.add(pool, A01), B11, T);
+			strassen(pool, A10.subtract(A00), B00.add(pool, B01), U);
+			strassen(pool, A01.subtract(A11), B10.add(pool, B11), V);
+
+			Matrix C00 = P.add(pool, S.add(pool, V.subtract(pool, T)));
+			Matrix C01 = R.add(pool, T);
+			Matrix C10 = Q.add(pool, S);
+			Matrix C11 = P.add(pool, R.add(pool, U.subtract(pool, Q)));
+
+			c.copy(P.add(pool, S.add(pool, V.subtract(pool, T))), 0, 0, m/2 - 1,       m/2 - 1,       0,   0);
+			c.copy(R.add(pool, T),                                0, 0, m/2 - 1,       b.x - m/2 - 1, 0,   m/2);
+			c.copy(Q.add(pool, S),                                0, 0, a.y - m/2 - 1, m/2 - 1,       m/2, 0);
+			c.copy(P.add(pool, R.add(pool, U.subtract(pool, Q))), 0, 0, a.y - m/2 - 1, b.x - m/2 - 1, m/2, m/2);
 
 			pool.add(A00);
 			pool.add(A01);
@@ -165,6 +198,10 @@ public class Matrix {
 			pool.add(T);
 			pool.add(U);
 			pool.add(V);
+			pool.add(C00);
+			pool.add(C01);
+			pool.add(C10);
+			pool.add(C11);
 		}
 	}
 
