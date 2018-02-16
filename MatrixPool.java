@@ -21,7 +21,7 @@ public class MatrixPool {
 		long key = (((long) y << 32) | (long) x);
 
 		Queue<Matrix> p = pool.get(key);
-		if(p != null && p.peek() != null) {
+		if(p != null && !p.isEmpty()) {
 			return p.poll();
 		}
 		return new Matrix(y, x);
@@ -40,7 +40,7 @@ public class MatrixPool {
 		long key = (((long) y << 32) | (long) x);
 
 		Queue<Matrix> p = pool.get(key);
-		if(p != null && p.peek() != null) {
+		if(p != null && !p.isEmpty()) {
 			return p.poll();
 		}
 		return null;
