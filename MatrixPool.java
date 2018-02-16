@@ -45,7 +45,4 @@ public class MatrixPool {
 		}
 		return null;
 	}
-
-	public static void main(String[] args) {
-	}
 }
