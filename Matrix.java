@@ -20,6 +20,7 @@ public class Matrix {
 			}
 		}
 	}
+
 	public Matrix(Matrix a, int ySize, int xSize, int yStart, int xStart, int yEnd, int xEnd) { //Copy Constructor
 		y = ySize;
 		x = xSize;
@@ -30,6 +31,7 @@ public class Matrix {
 			}
 		}
 	}
+
 	public Matrix add(Matrix matrix) {
 		Matrix temp = new Matrix(y, x);
 		if(this.compareDim(matrix)){
@@ -44,6 +46,7 @@ public class Matrix {
 		}
 		return temp;
 	}
+
 	public Matrix subtract(Matrix matrix) {
 		Matrix temp = new Matrix(y, x);
 		if(this.compareDim(matrix)){
@@ -58,9 +61,11 @@ public class Matrix {
 		}
 		return temp;
 	}
+
 	public void replace(int y, int x, int value) {
 		array[y][x] = value;
 	}
+
 	public void copy(Matrix matrix, int yStart, int xStart, int yEnd, int xEnd, int yBegin, int xBegin) {
 		for(int i = yStart; i <= yEnd; i++) {
 			for(int j = xStart; j <= xEnd; j++) {
@@ -72,6 +77,7 @@ public class Matrix {
 			}
 		}
 	}
+
 	public void print() {
 		for(int i = 0; i < y; i++) {
 			for(int j = 0; j < x; j++) {
@@ -80,6 +86,7 @@ public class Matrix {
 			System.out.println();
 		}
 	}
+
 	public Matrix multiply(Matrix matrix) {
 		Matrix result = new Matrix(this.y, matrix.x);
 		int temp = 0;
@@ -99,6 +106,7 @@ public class Matrix {
 		}
 		return result;
 	}
+	
 	public static void strassen(Matrix a, Matrix b, Matrix c) {
 		/*if(a.x == b.y && a.y == c.y && b.x == c.x) {
 			if(a.y == 2 && b.x == 2 && a.y == a.x && b.y == b.x) {*/
@@ -156,15 +164,19 @@ public class Matrix {
 			System.out.println("Incompatible matrices!");
 		}
 	}*/
+
 	private static int nextPowOfTwo(int n) {
 		return (int)Math.pow(2, Math.ceil(Math.log(n) / Math.log(2)));
 	}
+
 	public int getValue(int y, int x) {
 		return array[y][x];
 	}
+
 	public int[][] getArray() {
 		return array;
 	}
+
 	public void fillAsc() {
 		int count = 0;
 		for(int i = 0; i < y; i++) {
@@ -174,6 +186,7 @@ public class Matrix {
 			}
 		}
 	}
+
 	public void fillRand(int min, int max) {
 		Random rand = new Random();
 		for(int i = 0; i < y; i++) {
@@ -182,6 +195,7 @@ public class Matrix {
 			}
 		}
 	}
+
 	public void shuffle() {
 		Random rand = new Random();
 		for(int i = y - 1; i > 0; i--){
@@ -195,9 +209,11 @@ public class Matrix {
 			}
 		}
 	}
+
 	public boolean compareDim(Matrix a) {
 		return this.y == a.y && this.x == a.x;
 	}
+
 	public boolean equals(Matrix a) { //Compares equality of matrix with parameter matrix
 		if(!this.compareDim(a)) {
 			return false;
