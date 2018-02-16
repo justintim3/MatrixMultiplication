@@ -71,8 +71,7 @@ public class Matrix {
 			for(int j = xStart; j <= xEnd; j++) {
 				try {
 					array[i - yStart + yBegin][j - xStart + xBegin] = matrix.getValue(i, j);
-				}
-				catch (ArrayIndexOutOfBoundsException E) {
+				} catch (ArrayIndexOutOfBoundsException E) {
 				}
 			}
 		}
@@ -107,63 +106,54 @@ public class Matrix {
 		return result;
 	}
 	
-	public static void strassen(Matrix a, Matrix b, Matrix c) {
-		/*if(a.x == b.y && a.y == c.y && b.x == c.x) {
-			if(a.y == 2 && b.x == 2 && a.y == a.x && b.y == b.x) {*/
-			if(a.y == 2) {
-				c.replace(0, 0, a.getValue(0, 0) * b.getValue(0, 0) + a.getValue(0, 1) * b.getValue(1, 0));
-				c.replace(0, 1, a.getValue(0, 0) * b.getValue(0, 1) + a.getValue(0, 1) * b.getValue(1, 1));
-				c.replace(1, 0, a.getValue(1, 0) * b.getValue(0, 0) + a.getValue(1, 1) * b.getValue(1, 0));
-				c.replace(1, 1, a.getValue(1, 0) * b.getValue(0, 1) + a.getValue(1, 1) * b.getValue(1, 1));
-			}/*
-			else if(a.y <= 2 || b.x <= 2) {
-				c.copy(a.multiply(b), 0, 0, a.y - 1, b.x - 1, 0, 0);
-			}*/
-			else {
-				int m = a.y;//= nextPowOfTwo(Math.max(Math.max(a.y, a.x), Math.max(b.y, b.x)));
-				//Matrix A = new Matrix(a, m, m, 0, 0, a.y - 1, a.x - 1);
-				//Matrix B = new Matrix(b, m, m, 0, 0, b.y - 1, b.x - 1);
-				Matrix A00 = new Matrix(a, m/2, m/2, 0, 0, m/2 - 1, m/2 - 1);
-				Matrix A01 = new Matrix(a, m/2, m/2, 0, m/2, m/2 - 1, m - 1);
-				Matrix A10 = new Matrix(a, m/2, m/2, m/2, 0, m - 1, m/2 - 1);
-				Matrix A11 = new Matrix(a, m/2, m/2, m/2, m/2, m - 1, m - 1);
-				Matrix B00 = new Matrix(b, m/2, m/2, 0, 0, m/2 - 1, m/2 - 1);
-				Matrix B01 = new Matrix(b, m/2, m/2, 0, m/2, m/2 - 1, m - 1);
-				Matrix B10 = new Matrix(b, m/2, m/2, m/2, 0, m - 1, m/2 - 1);
-				Matrix B11 = new Matrix(b, m/2, m/2, m/2, m/2, m - 1, m - 1);
-				Matrix P = new Matrix(m/2, m/2);
-				Matrix Q = new Matrix(m/2, m/2);
-				Matrix R = new Matrix(m/2, m/2);
-				Matrix S = new Matrix(m/2, m/2);
-				Matrix T = new Matrix(m/2, m/2);
-				Matrix U = new Matrix(m/2, m/2);
-				Matrix V = new Matrix(m/2, m/2);
-				//Matrix C00;
-				//Matrix C01;
-				//Matrix C10;
-				//Matrix C11;
-				strassen(A00.add(A11), B00.add(B11), P);
-				strassen(A10.add(A11), B00, Q);
-				strassen(A00, B01.subtract(B11), R);
-				strassen(A11, B10.subtract(B00), S);
-				strassen(A00.add(A01), B11, T);
-				strassen(A10.subtract(A00), B00.add(B01), U);
-				strassen(A01.subtract(A11), B10.add(B11), V);
-				
-				//C00 = P.add(S.add(V.subtract(T)));
-				//C01 = R.add(T);
-				//C10 = Q.add(S);
-				//C11 = P.add(R.add(U.subtract(Q)));
-				c.copy(P.add(S.add(V.subtract(T))), 0, 0, m/2 - 1, m/2 - 1, 0, 0);
-				c.copy(R.add(T), 0, 0, m/2 - 1, b.x - m/2 - 1, 0, m/2);
-				c.copy(Q.add(S), 0, 0, a.y - m/2 - 1, m/2 - 1, m/2, 0);
-				c.copy(P.add(R.add(U.subtract(Q))), 0, 0, a.y - m/2 - 1, b.x - m/2 - 1, m/2, m/2);
-			}
-		}/*
-		else {
-			System.out.println("Incompatible matrices!");
+	public static void strassen(MatrixPool pool, Matrix a, Matrix b, Matrix c) {
+		if(a.y == 2) {
+			c.replace(0, 0, a.getValue(0, 0) * b.getValue(0, 0) + a.getValue(0, 1) * b.getValue(1, 0));
+			c.replace(0, 1, a.getValue(0, 0) * b.getValue(0, 1) + a.getValue(0, 1) * b.getValue(1, 1));
+			c.replace(1, 0, a.getValue(1, 0) * b.getValue(0, 0) + a.getValue(1, 1) * b.getValue(1, 0));
+			c.replace(1, 1, a.getValue(1, 0) * b.getValue(0, 1) + a.getValue(1, 1) * b.getValue(1, 1));
+		} else {
+			int m = a.y;
+			Matrix A00 = pool.createMatrix(m / 2, m / 2);
+			Matrix A01 = pool.createMatrix(m / 2, m / 2);
+			Matrix A10 = pool.createMatrix(m / 2, m / 2);
+			Matrix A11 = pool.createMatrix(m / 2, m / 2);
+			Matrix B00 = pool.createMatrix(m / 2, m / 2);
+			Matrix B01 = pool.createMatrix(m / 2, m / 2);
+			Matrix B10 = pool.createMatrix(m / 2, m / 2);
+			Matrix B11 = pool.createMatrix(m / 2, m / 2);
+
+			A00.copy(a, m/2, m/2, 0,   0,   m/2 - 1, m/2 - 1);
+			A01.copy(a, m/2, m/2, 0,   m/2, m/2 - 1, m - 1  );
+			A10.copy(a, m/2, m/2, m/2, 0,   m - 1,   m/2 - 1);
+			A11.copy(a, m/2, m/2, m/2, m/2, m - 1,   m - 1  );
+			B00.copy(b, m/2, m/2, 0,   0,   m/2 - 1, m/2 - 1);
+			B01.copy(b, m/2, m/2, 0,   m/2, m/2 - 1, m - 1  );
+			B10.copy(b, m/2, m/2, m/2, 0,   m - 1,   m/2 - 1);
+			B11.copy(b, m/2, m/2, m/2, m/2, m - 1,   m - 1  );
+
+			Matrix P = pool.createMatrix(m/2, m/2);
+			Matrix Q = pool.createMatrix(m/2, m/2);
+			Matrix R = pool.createMatrix(m/2, m/2);
+			Matrix S = pool.createMatrix(m/2, m/2);
+			Matrix T = pool.createMatrix(m/2, m/2);
+			Matrix U = pool.createMatrix(m/2, m/2);
+			Matrix V = pool.createMatrix(m/2, m/2);
+
+			strassen(pool, A00.add(A11), B00.add(B11), P);
+			strassen(pool, A10.add(A11), B00, Q);
+			strassen(pool, A00, B01.subtract(B11), R);
+			strassen(pool, A11, B10.subtract(B00), S);
+			strassen(pool, A00.add(A01), B11, T);
+			strassen(pool, A10.subtract(A00), B00.add(B01), U);
+			strassen(pool, A01.subtract(A11), B10.add(B11), V);
+			
+			c.copy(P.add(S.add(V.subtract(T))), 0, 0, m/2 - 1,       m/2 - 1,       0,   0);
+			c.copy(R.add(T),                    0, 0, m/2 - 1,       b.x - m/2 - 1, 0,   m/2);
+			c.copy(Q.add(S),                    0, 0, a.y - m/2 - 1, m/2 - 1,       m/2, 0);
+			c.copy(P.add(R.add(U.subtract(Q))), 0, 0, a.y - m/2 - 1, b.x - m/2 - 1, m/2, m/2);
 		}
-	}*/
+	}
 
 	private static int nextPowOfTwo(int n) {
 		return (int)Math.pow(2, Math.ceil(Math.log(n) / Math.log(2)));
