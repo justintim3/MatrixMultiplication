@@ -9,7 +9,8 @@ public class Matrix {
 		this.y = y;
 		this.x = x;
 	}
-	public Matrix(Matrix a) {	//Copy Constructor
+
+	public Matrix(Matrix a) { //Copy Constructor
 		this.y = a.y;
 		this.x = a.x;
 		array = new int [this.y][this.x];
@@ -19,7 +20,7 @@ public class Matrix {
 			}
 		}
 	}
-	public Matrix(Matrix a, int ySize, int xSize, int yStart, int xStart, int yEnd, int xEnd) {	//Copy Constructor
+	public Matrix(Matrix a, int ySize, int xSize, int yStart, int xStart, int yEnd, int xEnd) { //Copy Constructor
 		y = ySize;
 		x = xSize;
 		array = new int [y][x];
@@ -197,7 +198,7 @@ public class Matrix {
 	public boolean compareDim(Matrix a) {
 		return this.y == a.y && this.x == a.x;
 	}
-	public boolean equals(Matrix a) {	//Compares equality of matrix with parameter matrix
+	public boolean equals(Matrix a) { //Compares equality of matrix with parameter matrix
 		if(!this.compareDim(a)) {
 			return false;
 		}
