@@ -40,8 +40,7 @@ public class Matrix {
 					temp.replace(i, j, array[i][j] + matrix.getValue(i, j)); 
 				}
 			}
-		}
-		else {
+		} else {
 			System.out.println("Incompatible matrices!");
 		}
 		return temp;
@@ -55,8 +54,7 @@ public class Matrix {
 					temp.replace(i, j, array[i][j] - matrix.getValue(i, j)); 
 				}
 			}
-		}
-		else {
+		} else {
 			System.out.println("Incompatible matrices!");
 		}
 		return temp;
@@ -99,8 +97,7 @@ public class Matrix {
 					temp = 0;
 				}
 			}
-		}
-		catch (ArrayIndexOutOfBoundsException E) {
+		} catch (ArrayIndexOutOfBoundsException E) {
 			System.out.println("Incompatible matrices!");
 		}
 		return result;
