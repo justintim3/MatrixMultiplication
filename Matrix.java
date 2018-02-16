@@ -178,10 +178,10 @@ public class Matrix {
 			Matrix C10 = Q.add(pool, S);
 			Matrix C11 = P.add(pool, R.add(pool, U.subtract(pool, Q)));
 
-			c.copy(P.add(pool, S.add(pool, V.subtract(pool, T))), 0, 0, m/2 - 1,       m/2 - 1,       0,   0);
-			c.copy(R.add(pool, T),                                0, 0, m/2 - 1,       b.x - m/2 - 1, 0,   m/2);
-			c.copy(Q.add(pool, S),                                0, 0, a.y - m/2 - 1, m/2 - 1,       m/2, 0);
-			c.copy(P.add(pool, R.add(pool, U.subtract(pool, Q))), 0, 0, a.y - m/2 - 1, b.x - m/2 - 1, m/2, m/2);
+			c.copy(C00, 0, 0, m/2 - 1,       m/2 - 1,       0,   0);
+			c.copy(C01, 0, 0, m/2 - 1,       b.x - m/2 - 1, 0,   m/2);
+			c.copy(C10, 0, 0, a.y - m/2 - 1, m/2 - 1,       m/2, 0);
+			c.copy(C11, 0, 0, a.y - m/2 - 1, b.x - m/2 - 1, m/2, m/2);
 
 			pool.add(A00);
 			pool.add(A01);
