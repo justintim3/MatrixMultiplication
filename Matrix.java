@@ -194,11 +194,11 @@ public class Matrix {
 		for(int i = y - 1; i > 0; i--){
 			for(int j = x - 1; j > 0; j--){
 				int m = rand.nextInt(i + 1);
-	            int n = rand.nextInt(j + 1);
+				int n = rand.nextInt(j + 1);
 
-	            int temp = array[i][j];
-	            array[i][j] = array[m][n];
-	            array[m][n] = temp;
+				int temp = array[i][j];
+				array[i][j] = array[m][n];
+				array[m][n] = temp;
 			}
 		}
 	}
