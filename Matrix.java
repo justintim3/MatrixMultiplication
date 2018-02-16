@@ -152,6 +152,22 @@ public class Matrix {
 			c.copy(R.add(T),                    0, 0, m/2 - 1,       b.x - m/2 - 1, 0,   m/2);
 			c.copy(Q.add(S),                    0, 0, a.y - m/2 - 1, m/2 - 1,       m/2, 0);
 			c.copy(P.add(R.add(U.subtract(Q))), 0, 0, a.y - m/2 - 1, b.x - m/2 - 1, m/2, m/2);
+
+			pool.add(A00);
+			pool.add(A01);
+			pool.add(A10);
+			pool.add(A11);
+			pool.add(B00);
+			pool.add(B01);
+			pool.add(B10);
+			pool.add(B11);
+			pool.add(P);
+			pool.add(Q);
+			pool.add(R);
+			pool.add(S);
+			pool.add(T);
+			pool.add(U);
+			pool.add(V);
 		}
 	}
 
