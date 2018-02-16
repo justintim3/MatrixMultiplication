@@ -128,11 +128,11 @@ public class Matrix {
 
 			strassen(pool, A00.add(pool, A11), B00.add(pool, B11), P);
 			strassen(pool, A10.add(pool, A11), B00, Q);
-			strassen(pool, A00, B01.subtract(B11), R);
-			strassen(pool, A11, B10.subtract(B00), S);
+			strassen(pool, A00, B01.subtract(pool, B11), R);
+			strassen(pool, A11, B10.subtract(pool, B00), S);
 			strassen(pool, A00.add(pool, A01), B11, T);
-			strassen(pool, A10.subtract(A00), B00.add(pool, B01), U);
-			strassen(pool, A01.subtract(A11), B10.add(pool, B11), V);
+			strassen(pool, A10.subtract(pool, A00), B00.add(pool, B01), U);
+			strassen(pool, A01.subtract(pool, A11), B10.add(pool, B11), V);
 
 			Matrix C00 = P.add(pool, S.add(pool, V.subtract(pool, T)));
 			Matrix C01 = R.add(pool, T);
