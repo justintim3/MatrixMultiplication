@@ -17,6 +17,16 @@ public class MatrixPool {
 		pool.get(key).add(a);
 	}
 
+	public Matrix createMatrix(int y, int x) {
+		long key = (((long) y << 32) | (long) x);
+
+		Queue<Matrix> p = pool.get(key);
+		if(p != null && p.peek() != null) {
+			return p.poll();
+		}
+		return new Matrix(y, x);
+	}
+
 	public Matrix peek(int y, int x) {
 		long key = (((long) y << 32) | (long) x);
 
