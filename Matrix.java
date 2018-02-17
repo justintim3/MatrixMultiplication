@@ -120,14 +120,14 @@ public class Matrix {
 			Matrix B10 = pool.createMatrix(m / 2, m / 2);
 			Matrix B11 = pool.createMatrix(m / 2, m / 2);
 
-			A00.copy(a, m/2, m/2, 0,   0,   m/2 - 1, m/2 - 1);
-			A01.copy(a, m/2, m/2, 0,   m/2, m/2 - 1, m - 1  );
-			A10.copy(a, m/2, m/2, m/2, 0,   m - 1,   m/2 - 1);
-			A11.copy(a, m/2, m/2, m/2, m/2, m - 1,   m - 1  );
-			B00.copy(b, m/2, m/2, 0,   0,   m/2 - 1, m/2 - 1);
-			B01.copy(b, m/2, m/2, 0,   m/2, m/2 - 1, m - 1  );
-			B10.copy(b, m/2, m/2, m/2, 0,   m - 1,   m/2 - 1);
-			B11.copy(b, m/2, m/2, m/2, m/2, m - 1,   m - 1  );
+			A00.copy(a, 0,   0,   m/2 - 1, m/2 - 1, 0, 0);
+			A01.copy(a, 0,   m/2, m/2 - 1, m - 1  , 0, 0);
+			A10.copy(a, m/2, 0,   m - 1,   m/2 - 1, 0, 0);
+			A11.copy(a, m/2, m/2, m - 1,   m - 1  , 0, 0);
+			B00.copy(b, 0,   0,   m/2 - 1, m/2 - 1, 0, 0);
+			B01.copy(b, 0,   m/2, m/2 - 1, m - 1  , 0, 0);
+			B10.copy(b, m/2, 0,   m - 1,   m/2 - 1, 0, 0);
+			B11.copy(b, m/2, m/2, m - 1,   m - 1  , 0, 0);
 
 			Matrix P = pool.createMatrix(m/2, m/2);
 			Matrix Q = pool.createMatrix(m/2, m/2);

@@ -30,11 +30,10 @@ public class MatrixMultiplication {
 			
 			a = new Matrix(ay, ax);
 			b = new Matrix(by, bx);
-			//c = new Matrix(cy, cx);
 			
 			a.fillRand(0, 100);
 			b.fillRand(0, 100);
-			
+
 			mulTime[i - start] = timer(multiply, pool, a, b);
 			straTime[i - start] = timer(strassen, pool, a, b);
 			
@@ -44,9 +43,6 @@ public class MatrixMultiplication {
 			}
 			System.out.println();
 		}
-
-		//System.out.println(a.compare(b));
-		//a.print();
 		System.out.println();
 	}
 	public static long timer(Function<MatrixPool, Function<Matrix, Function<Matrix, Matrix>>> f, MatrixPool pool, Matrix a, Matrix b) {
