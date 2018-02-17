@@ -10,12 +10,14 @@ public class MatrixMultiplication {
 		long[] straTime = new long[end - start + 1]; 
 
 		Function<MatrixPool, Function<Matrix, Function<Matrix, Matrix>>> multiply = p -> a -> b -> {
-			return a.multiply(b);
+			Matrix c = p.createMatrix(a.y, b.x);
+			MatrixUtils.multiply(p, a, b, c);
+			return c;
 		};
 
 		Function<MatrixPool, Function<Matrix, Function<Matrix, Matrix>>> strassen = p -> a -> b -> {
 			Matrix c = p.createMatrix(a.y, b.x);
-			Matrix.strassen(p, a, b, c);
+			MatrixUtils.strassen(p, a, b, c);
 			return c;
 		};
 
@@ -30,9 +32,16 @@ public class MatrixMultiplication {
 			
 			a = new Matrix(ay, ax);
 			b = new Matrix(by, bx);
+			//c = new Matrix(ay, bx);
+			//d = new Matrix(ay, bx);
 			
 			a.fillRand(0, 100);
 			b.fillRand(0, 100);
+
+			//MatrixUtils.multiply(pool, a, b, c);
+			//MatrixUtils.strassen(pool, a, b, d);
+
+			//System.out.println(c.equals(d));
 
 			mulTime[i - start] = timer(multiply, pool, a, b);
 			straTime[i - start] = timer(strassen, pool, a, b);
