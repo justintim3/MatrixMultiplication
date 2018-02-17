@@ -26,26 +26,4 @@ public class MatrixPool {
 		}
 		return new Matrix(y, x);
 	}
-
-	public Matrix peek(int y, int x) {
-		long key = (((long) y << 32) | (long) x);
-
-		if(pool.get(key) == null) {
-			pool.put(key, new LinkedList<Matrix>());
-		}
-		return pool.get(key).peek();
-	}
-
-	public Matrix poll(int y, int x) {
-		long key = (((long) y << 32) | (long) x);
-
-		Queue<Matrix> p = pool.get(key);
-		if(p != null && !p.isEmpty()) {
-			return p.poll();
-		}
-		return null;
-	}
-
-	public static void main(String[] args) {
-	}
 }
